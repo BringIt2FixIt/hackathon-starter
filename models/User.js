@@ -23,10 +23,11 @@ const userSchema = new mongoose.Schema({
 
   profile: {
     name: String,
+    phone: String,
     gender: String,
     location: String,
     website: String,
-    picture: String
+    picture: String,
   }
 }, { timestamps: true });
 
