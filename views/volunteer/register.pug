@@ -1,0 +1,16 @@
+extends ../layout
+
+block content
+  .pb-2.mt-2.mb-4.border-bottom
+    h3 Start helping
+  form(method='POST')
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='categories') Categories
+      select
+        each category in categories
+            option(value=category) #{category}
+    .form-group
+      .offset-md-3.col-md-7.pl-2
+        button.col-md-3.btn.btn-primary(type='submit')
+          i.far.fa-user.fa-sm
+          | Submit

@@ -33,6 +33,7 @@ const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const apiController = require('./controllers/api');
 const contactController = require('./controllers/contact');
+const volonteerController = require("./controllers/volunteer");
 
 /**
  * API keys and Passport configuration.
@@ -236,6 +237,11 @@ app.get('/auth/quickbooks', passport.authorize('quickbooks', { scope: ['com.intu
 app.get('/auth/quickbooks/callback', passport.authorize('quickbooks', { failureRedirect: '/login' }), (req, res) => {
   res.redirect(req.session.returnTo);
 });
+
+/**
+ * Volonteer routes.
+ */
+app.get("/volunteer", volonteerController.getVolunteerRegistration);
 
 /**
  * Error Handler.
