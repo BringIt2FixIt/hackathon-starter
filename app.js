@@ -30,11 +30,12 @@ dotenv.config({ path: '.env' });
  * Controllers (route handlers).
  */
 const homeController = require('./controllers/home');
-const helpController = require('./controllers/help');
 const userController = require('./controllers/user');
 const apiController = require('./controllers/api');
 const contactController = require('./controllers/contact');
 const volonteerController = require("./controllers/volunteer");
+const helpController = require('./controllers/help');
+const requestController = require('./controllers/requests');
 
 /**
  * API keys and Passport configuration.
@@ -149,6 +150,8 @@ app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userControl
 
 app.get('/help', passportConfig.isAuthenticated, helpController.index);
 app.post('/help', passportConfig.isAuthenticated, helpController.sendHelp);
+
+app.get('/requests', passportConfig.isAuthenticated, requestController.index);
 
 
 /**
