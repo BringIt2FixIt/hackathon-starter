@@ -1,5 +1,6 @@
 const validator = require('validator');
 const twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
+const WorkCategories = require("../models/WorkCategories.js");
 
 /**
  * GET /
@@ -7,7 +8,8 @@ const twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKE
  */
 exports.index = (req, res) => {
   res.render('help', {
-    title: 'Help'
+    title: 'Help',
+    categories: WorkCategories.workCategories
   });
 };
 
@@ -27,7 +29,7 @@ exports.sendHelp = (req, res, next) => {
     from: '+17787711046',
     body: req.user.profile.name+' needs help with ' +req.body.category+'! '+req.body.message
   };
-  
+
   twilio.messages.create(message).then((sentMessage) => {
     req.flash('success', { msg: `Text send to ${sentMessage.to}` });
     res.redirect('/api/twilio');
