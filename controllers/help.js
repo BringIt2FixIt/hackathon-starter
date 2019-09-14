@@ -20,7 +20,7 @@ exports.sendHelp = (req, res, next) => {
 
   if (validationErrors.length) {
     req.flash('errors', validationErrors);
-    return res.redirect('/api/twilio');
+    return res.redirect('/help');
   }
 
   // TODO: get the phone number for the right person from the database
@@ -32,6 +32,6 @@ exports.sendHelp = (req, res, next) => {
 
   twilio.messages.create(message).then((sentMessage) => {
     req.flash('success', { msg: `Text send to ${sentMessage.to}` });
-    res.redirect('/api/twilio');
+    return res.redirect('/help');
   }).catch(next);
 };
