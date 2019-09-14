@@ -246,7 +246,8 @@ app.get('/auth/quickbooks/callback', passport.authorize('quickbooks', { failureR
 /**
  * Volonteer routes.
  */
-app.get("/volunteer", volonteerController.getVolunteerRegistration);
+app.get('/volunteer', volonteerController.getVolunteerRegistration);
+app.post('/volunteer', volonteerController.register);
 
 /**
  * Error Handler.

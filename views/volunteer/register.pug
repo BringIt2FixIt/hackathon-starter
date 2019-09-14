@@ -11,7 +11,7 @@ block content
         label Category:
         each category in categories
             div
-                input(type='radio', name='category', id=category, value=category)
+                input(type='checkbox', name='categories', id=category, value=category)
                 label(for=category) #{category}
     .form-group
       .offset-md-3.col-md-7.pl-2
