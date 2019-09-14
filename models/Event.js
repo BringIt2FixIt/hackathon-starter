@@ -9,12 +9,6 @@ const eventSchema = new mongoose.Schema(
         categories: [String],
       },
     ],
-    participants: [
-      {
-        email: String,
-        category: String,
-      },
-    ],
   },
   { timestamps: true },
 );
