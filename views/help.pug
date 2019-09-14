@@ -8,6 +8,18 @@ block content
     .col-md-6
       form(role='form', method='POST')
         input(type='hidden', name='_csrf', value=_csrf)
+
+        label Category:
+            div
+                input(type='radio', name='category', id='bike', value='bike')
+                label(for='bike') Bike
+            div
+                input(type='radio', name='category', id='woodwork', value='woodwork')
+                label(for='woodwork') Woodwork
+            div
+                input(type='radio', name='category', id='electronics', value='electronics')
+                label(for='electronics') Electronics
+
         .form-group
           label.control-label Message
           input.form-control(type='text', name='message')
