@@ -24,7 +24,8 @@ exports.register = (req, res, next) => {
   }
   Event.findOne({ id: sharedEventId }, (err, existingEvent) => {
     if (err) {
-      return done(err);
+      req.flash('errors', 'an error occurred when finding event');
+      return res.redirect('/volunteer');
     }
     if (existingEvent == null) {
       console.log('Creating event');
@@ -43,6 +44,7 @@ exports.register = (req, res, next) => {
           return next(err);
         }
         console.log('Did save event');
+        req.flash('success', { msg: `new event created` });
         res.redirect('/volunteer');
       });
     } else {
@@ -81,6 +83,7 @@ exports.register = (req, res, next) => {
           return next(err);
         }
         console.log('Did save event');
+        req.flash('success', { msg: `volunteer added` });
         res.redirect('/volunteer');
       });
     }
