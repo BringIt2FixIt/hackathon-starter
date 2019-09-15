@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  h1 
+  p.lead Ask for help!
+  hr
+  .row
+    .col-md-6
+      form(role='form', method='POST')
+        input(type='hidden', name='_csrf', value=_csrf)
+
+        label Category:
+            each category in categories
+                div
+                    input(type='radio', name='category', id=category, value=category)
+                    label(for=category)= category
+        .form-group
+          label.control-label Message
+          input.form-control(type='text', name='message')
+        button.btn.btn-raised(type='submit')
+          i.fas.fa-location-arrow.fa-sm
+          | Help Me!

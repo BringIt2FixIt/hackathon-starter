@@ -24,7 +24,7 @@ const upload = multer({ dest: path.join(__dirname, 'uploads') });
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
-dotenv.config({ path: '.env.example' });
+dotenv.config({ path: '.env' });
 
 /**
  * Controllers (route handlers).
@@ -33,6 +33,9 @@ const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const apiController = require('./controllers/api');
 const contactController = require('./controllers/contact');
+const volonteerController = require("./controllers/volunteer");
+const helpController = require('./controllers/help');
+const requestController = require('./controllers/requests');
 
 /**
  * API keys and Passport configuration.
@@ -145,6 +148,12 @@ app.post('/account/password', passportConfig.isAuthenticated, userController.pos
 app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 
+app.get('/help', passportConfig.isAuthenticated, helpController.index);
+app.post('/help', passportConfig.isAuthenticated, helpController.sendHelp);
+
+app.get('/requests', passportConfig.isAuthenticated, requestController.index);
+
+
 /**
  * API examples routes.
  */
@@ -236,6 +245,12 @@ app.get('/auth/quickbooks', passport.authorize('quickbooks', { scope: ['com.intu
 app.get('/auth/quickbooks/callback', passport.authorize('quickbooks', { failureRedirect: '/login' }), (req, res) => {
   res.redirect(req.session.returnTo);
 });
+
+/**
+ * Volonteer routes.
+ */
+app.get('/volunteer', volonteerController.getVolunteerRegistration);
+app.post('/volunteer', volonteerController.register);
 
 /**
  * Error Handler.

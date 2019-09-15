@@ -1,23 +1,16 @@
 extends layout
 
-
-
 block content
- 
-  h1.appTitle MRC Registiration
+
+  h1 
+  p.lead Welcome to the BI2FI Repair Cafe support system system!  Register as a volunteer and ask for help.  https://www.metrovanrepaircafes.ca
+  hr
   .row
-    .col-md-6.centered.bottomMargin
-      input(class = "bottomBorder" placeholder="Volunteer Team" type="text" name="name")
-  .row      
-    .col-md-6.centered.bottomMargin
-       input(class = "bottomBorder" placeholder="Email*" type="text" name="name")
-  .row      
-    .col-md-6.centered.bottomMargin
-      input(class = "bottomBorder" placeholder="Phone" type="text" name="name")
-  .row      
-    .col-md-6.centered.bottomMargin
-      input(class = "bottomBorder" type="text" name="name")
-  .row
-  h2.centered Expertise
-   .col-md-6.centered.bottomMargin 
-    input(class = "bottomBorder" placeholder = "Select All That Are Relevant" type="text" name="name")
+    .col-md-6
+      h2 Volunteer
+      p
+        a.btn.btn-raised(href='/volunteer', role='button') Start »
+    .col-md-6
+      h2 Get Help
+      p
+        a.btn.btn-raised(href='/help', role='button') Start »
