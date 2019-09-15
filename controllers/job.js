@@ -92,3 +92,29 @@ exports.list = (req, res, next) => {
     },
   );
 };
+
+exports.updateList = (req, res, next) => {
+  console.log(`Update list: ${JSON.stringify(req.body)}`);
+
+  const { requestId } = req.body;
+
+  if (requestId == null || requestId.length === 0) {
+    console.warn('Unkown request');
+    req.flash('error', { msg: 'Unknown job request' });
+    res.redirect(`/jobs`);
+    return;
+  }
+
+  Job.findOneAndUpdate({ _id: requestId }, { status: JobStatus.DONE }).then(
+    () => {
+      console.log(`Did update status for: ${requestId}`);
+
+      req.flash('success', { msg: 'Did update status' });
+      res.redirect(`/jobs`);
+    },
+    error => {
+      console.log('Failed, error: ' + error);
+      req.flash('errors', { msg: error });
+    },
+  );
+};
