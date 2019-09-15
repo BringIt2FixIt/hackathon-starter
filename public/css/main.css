@@ -13029,3 +13029,7 @@ textarea {
 .bottomMargin {
   margin-bottom: 60px;
 }
+
+.smallMarginRight {
+  margin-right: 5px;
+}
