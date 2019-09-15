@@ -150,12 +150,6 @@ app.post('/account/password', passportConfig.isAuthenticated, userController.pos
 app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 
-app.get('/help', passportConfig.isAuthenticated, helpController.index);
-app.post('/help', passportConfig.isAuthenticated, helpController.sendHelp);
-
-app.get('/requests', passportConfig.isAuthenticated, requestController.index);
-
-
 /**
  * API examples routes.
  */
@@ -249,10 +243,20 @@ app.get('/auth/quickbooks/callback', passport.authorize('quickbooks', { failureR
 });
 
 /**
+ Help and Help requests
+ */
+app.get('/help', passportConfig.isAuthenticated, helpController.index);
+app.post('/help', passportConfig.isAuthenticated, helpController.sendHelp);
+app.get('/requests', passportConfig.isAuthenticated, requestController.index);
+
+
+/**
  * Volunteer routes.
  */
 app.get('/volunteer', volunteerController.getVolunteerRegistration);
 app.post('/volunteer', volunteerController.register);
+app.get('/volunteers', volunteerController.getVolunteers);
+
 app.get('/admin', adminController.getAdmin);
 app.post('/admin', adminController.populateGoogleSheet);
 
