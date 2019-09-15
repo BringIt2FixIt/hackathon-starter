@@ -1,0 +1,28 @@
+.appTitle {
+    margin: auto;
+    width: 400px;
+}
+
+.centered {
+    margin : auto;
+}
+
+.TopMargin {
+    margin-top: 60px;
+}
+
+.bottomBorder {
+    border: none;
+    border-bottom: solid;
+}
+.borderWidth {
+    width: 100%;
+}
+
+.bottomMargin {
+    margin-bottom: 60px;
+}
+
+.smallMarginRight {
+    margin-right: 5px;
+}
