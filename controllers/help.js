@@ -78,7 +78,7 @@ async function notifyEligibleVolunteers(req) {
 
   if (eligibleVolunteers.length === 0) {
     console.log('No eligible volunteers found');
-    return Promise.reject('No volunteers');
+    return Promise.reject('Sorry - there are no volunteers for that category!');
   }
 
   let eligibleVolunteerEmails = eligibleVolunteers.map(
@@ -122,7 +122,7 @@ exports.sendHelp = (req, res, next) => {
     .then(
       () => {
         console.log('Did save and notified with success');
-        req.flash('success', { msg: 'Did register help request' });
+        req.flash('success', { msg: 'Sent help request!  Someone should be on their way' });
         res.redirect('/help');
       },
       error => {
