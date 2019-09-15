@@ -175,19 +175,34 @@ exports.updateList = (req, res, next) => {
     return;
   }
 
-  Job.findOne({ _id: requestId })
-    .then(job => {
-      console.log(`Did find job: ${job}`);
+  Job.find({ eventId: sharedEventId })
+    .then(jobs => {
+      let job = jobs.find(job => {
+        return job._id == requestId;
+      });
+      if (job == null) {
+        console.log(`Job not found, id: ${requestId}`);
+        return new Error('Job not found');
+      }
+
+      jobs = jobs.filter(item => item.category === job.category);
+
+      console.log(`Did find job: ${job}, jobs in category: ${jobs.length}`);
 
       job.status = JobStatus.DONE;
 
       job.save().then(() => {
         console.log(`Did update status for: ${job}`);
 
-        notifyNextVisitor(job.category).then(
-          () => console.log('Did handle notifying next client'),
-          error => console.error('Failed to nofify, error: ' + error),
-        );
+        if (jobs.indexOf(job) === 0) {
+          console.debug('Job is first in the category');
+          notifyNextVisitor(job.category).then(
+            () => console.log('Did handle notifying next client'),
+            error => console.error('Failed to nofify, error: ' + error),
+          );
+        } else {
+          console.debug('Job is not first, will not notify');
+        }
 
         req.flash('success', { msg: 'Did update status' });
         ///?category=${job.category}
