@@ -96,7 +96,6 @@ exports.list = (req, res, next) => {
 
       jobs = jobs.sort((job1, job2) => job1.createdAt < job2.createdAt);
 
-      req.flash('success', { msg: 'Did load' });
       res.render('job/list', {
         title: 'Job Request List',
         category: category,
