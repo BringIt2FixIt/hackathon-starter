@@ -18,20 +18,18 @@ block content
       div.col-md-6.centered.bottomMargin.topMargin
         input(class="bottomBorder" placeholder="Phone" type="text" name="name")
     div.row
-      div.col-md-6.centered
-    H2 Expertise
+    h2.centered.col-md-6.bottomMargin Expertise
     div(style="padding-left:8px;").col-md-6.centered.bottomMargin.topMargin
       div(class="bottomBorder" class="borderWidth") Select All That Are Relevant
-
-      div.form-group.row
+      div.form-group.row  
         label.col-md-6.col-form-label.font-weight-bold(for='categories') Categories
+        div.flexContainer
           each category in categories
-              div
-                  input(type='checkbox', class='smallMarginRight', name='categories', id=category, value=category)
+              div.item
+                  input(type='checkbox' class="smallMarginRight"  name='categories' id=category value=category)
                   label(for=category) #{category}
-      div.form-group
-        div.offset-md-6.pl-2
-          button.col-md-6.btn.btn-primary(type='submit')
-            i.far.fa-user.fa-sm
-            | Submit
-            
+    div.form-group
+      div.offset-md-6.pl-2
+        button.col-md-6.btn.btn-primary(type='submit')
+          i.far.fa-user.fa-sm
+          | Submit
