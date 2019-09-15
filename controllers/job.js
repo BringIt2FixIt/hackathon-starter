@@ -2,6 +2,10 @@ const WorkCategories = require('../models/WorkCategories.js');
 const { Event, sharedEventId } = require('../models/Event');
 const { Job, JobStatus } = require('../models/Job');
 const validator = require('validator');
+const twilio = require('twilio')(
+  process.env.TWILIO_SID,
+  process.env.TWILIO_TOKEN,
+);
 
 exports.getRegistration = (req, res) => {
   res.render('job/register', {
@@ -111,12 +115,10 @@ function sendMessage(job) {
   const message = {
     to: job.phone,
     from: '+17787711046',
-    body: `Hi ${username}. You are next in '${req.body.category}' queue!`,
+    body: `Hi ${username}. You are next in '${job.category}' queue!`,
   };
 
-  console.debug(
-    `Send ${req.body.message} (${req.body.categor}) to ${receiverPhoneNumber} (${req.user.profile.name})`,
-  );
+  console.debug(`Send ${message}`);
 
   return twilio.messages.create(message);
 }
@@ -134,8 +136,8 @@ function notifyNextVisitor(category, matchingJobLengthCount) {
         matchingJobLengthCount != null &&
         matchingJobLengthCount !== jobs.length
       ) {
-        console.log(
-          `Mismatch between job count: ${jobs.length}, required: ${matchingJobLengthCount}`,
+        console.debug(
+          `Expected: Don't send notification, mismatch between job count: ${jobs.length}, required: ${matchingJobLengthCount}`,
         );
         return;
       }
@@ -149,7 +151,7 @@ function notifyNextVisitor(category, matchingJobLengthCount) {
       }
 
       console.debug(`Notify next visitor in queue: ${jobs[0]}`);
-      sendMessage(job);
+      sendMessage(jobs[0]);
     },
     error => {
       console.error('Failed, error: ' + error);
