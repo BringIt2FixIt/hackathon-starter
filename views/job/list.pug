@@ -1,14 +1,24 @@
 extends ../layout
 
 block content
-  h1 
-  if category
-    p.lead Job Requests for category: #{category}
-  else
-    p.lead Job Requests
-  each request in requests
-    .card
-      div Username: #{request.username}
-      div Category: #{request.category}
-      div Title: #{request.title}
-      div Description: #{request.description}
+    h1 
+    if category
+        p.lead Job Requests for category: #{category}
+    else
+        p.lead Job Requests
+    each request in requests
+        .card
+            div Username: #{request.username}
+            div Category: #{request.category}
+            div Title: #{request.title}
+            div Description: #{request.description}
+            if request.status == "done"
+                div.col-md-6.centered.topMargin.bottomMargin
+                    | COMPLETED
+            else
+                form(method='POST')
+                    input(type='hidden' name='_csrf', value=_csrf)
+                    input(type="hidden" name="requestId" value=request._id)
+                    button.col-md-6.btn.btn-primary(type='submit')
+                        i.far.fa-user.fa-sm
+                        | COMPLETE
