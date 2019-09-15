@@ -1,0 +1,26 @@
+extends layout
+
+block content
+    input(type='hidden', name='_csrf', value=_csrf)
+    div.pb-2.mt-2.mb-4.border-bottom
+        h3 Administration
+
+        form(method='POST')
+            input(type='hidden', name='_csrf', value=_csrf)
+            button.col-md-6.btn.btn-primary(type='submit') Export to Google Sheets
+
+    script.
+      function httpPostAsync(theUrl, callback) {
+        let data = {};
+        let token = document.getElementsByName("_csrf")[0].value;
+        console.log(token);
+        let xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function () {
+          if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+        }
+        xmlHttp.open("POST", theUrl, true); // true for asynchronous
+        xmlHttp.setRequestHeader('Csrf-Token', token);
+        let dataAsJson = JSON.stringify(data);
+        xmlHttp.send(dataAsJson);
+      }

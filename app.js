@@ -33,10 +33,11 @@ const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const apiController = require('./controllers/api');
 const contactController = require('./controllers/contact');
-const volonteerController = require('./controllers/volunteer');
+const volunteerController = require('./controllers/volunteer');
 const helpController = require('./controllers/help');
 const requestController = require('./controllers/requests');
 const jobController = require('./controllers/job');
+const adminController = require('./controllers/admin');
 
 /**
  * API keys and Passport configuration.
@@ -248,10 +249,12 @@ app.get('/auth/quickbooks/callback', passport.authorize('quickbooks', { failureR
 });
 
 /**
- * Volonteer routes.
+ * Volunteer routes.
  */
-app.get('/volunteer', volonteerController.getVolunteerRegistration);
-app.post('/volunteer', volonteerController.register);
+app.get('/volunteer', volunteerController.getVolunteerRegistration);
+app.post('/volunteer', volunteerController.register);
+app.get('/admin', adminController.getAdmin);
+app.post('/admin', adminController.populateGoogleSheet);
 
 /**
  * Job routes.
