@@ -9,20 +9,15 @@ const eventSchema = new mongoose.Schema(
         categories: [String],
       },
     ],
-    participants: [
-      {
-        email: String,
-        category: String,
-      },
-    ],
   },
   { timestamps: true },
 );
 
 const Event = mongoose.model('Event', eventSchema);
-module.exports = Event;
-
-/**
- * Hardcoded event id. For now there will be only 1 at any point of time.
- */
-module.exports.sharedEventId = 1;
+module.exports = {
+  Event: Event,
+  /**
+   * Hardcoded event id. For now there will be only 1 at any point of time.
+   */
+  sharedEventId: 1,
+};
