@@ -1,6 +1,5 @@
 const WorkCategories = require('../models/WorkCategories.js');
-const { User, sharedEventId } = require('../models/User');
-const Event = require('../models/Event');
+const { Event, sharedEventId } = require('../models/Event');
 
 exports.getVolunteerRegistration = (req, res) => {
   if (req.user == null) {
