@@ -1,7 +1,7 @@
 const { Event, sharedEventId } = require('../models/Event');
 
 exports.getAdmin = (req, res) => {
-    res.render('admin', {});
+    res.render('admin', {values:{}});
 };
 
 exports.populateGoogleSheet = (req, res) => {
@@ -13,7 +13,7 @@ exports.populateGoogleSheet = (req, res) => {
         } else {
             req.flash('success', { msg: 'Awesome, it worked' });
             console.log(existingEvents);
-            res.redirect('/admin');
+            res.render('admin', {values:JSON.stringify(existingEvents)});
         }
     });
 };
