@@ -6,6 +6,7 @@ const twilio = require('twilio')(
 const WorkCategories = require('../models/WorkCategories.js');
 const HelpRequest = require('../models/HelpRequest');
 const { Event, sharedEventId } = require('../models/Event');
+const User = require('../models/User');
 
 /**
  * GET /
@@ -21,7 +22,7 @@ exports.index = (req, res) => {
   });
 };
 
-function sendMessage(req, receiverPhoneNumber) {
+function sendMessage(req, res, next, receiverPhoneNumber) {
   const message = {
     to: receiverPhoneNumber,
     from: '+17787711046',
@@ -68,31 +69,31 @@ exports.sendHelp = (req, res, next) => {
 
     Event.findOne({ id: sharedEventId }, (err, existingEvent) => {
       if (err) {
-        return done(err);
+        return next(err);
       }
       if (existingEvent == null) {
         console.warn('No event found');
-        return done(err);
+        return next(err);
       }
 
       if (existingEvent.volunteers.length === 0) {
         console.log('No volonteers');
-        return done(err);
+        return next(err);
       }
 
       existingEvent.volunteers.forEach(volunteer => {
         User.findOne({ email: volunteer.email }, (err, user) => {
           if (err) {
-            return done(err);
+            return next(err);
           }
           if (user != null && user.phone != null) {
             console.debug(
               'Sending message to: ' + user.phone + ', email: ' + user.email,
             );
-            sendMessage(req, user.phone);
+            sendMessage(req, res, next, user.phone);
           }
 
-          return done(err);
+          return res.redirect('/');
         });
       });
     });
