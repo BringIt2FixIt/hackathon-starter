@@ -58,7 +58,7 @@ exports.sendHelp = (req, res, next) => {
   const helpRequest = new HelpRequest({
     from: req.user.email,
     category: req.body.category,
-    descriptionMessage: req.body.message,
+    message: req.body.message,
     eventId: sharedEventId,
   });
   helpRequest.save(err => {
@@ -81,19 +81,37 @@ exports.sendHelp = (req, res, next) => {
         return next(err);
       }
 
-      existingEvent.volunteers.forEach(volunteer => {
+      let aligibleVolunteers = existingEvent.volunteers.filter(volunteer => {
+        if (volunteer.categories.indexOf(req.body.category) === -1) {
+          return false;
+        } else {
+          return true;
+        }
+      });
+
+      if (aligibleVolunteers.length === 0) {
+        console.log('No eligible volunteers found');
+        return res.redirect('/help');
+      }
+
+      aligibleVolunteers.forEach(volunteer => {
         User.findOne({ email: volunteer.email }, (err, user) => {
           if (err) {
             return next(err);
           }
-          if (user != null && user.phone != null) {
+          if (user == null) {
+            console.log('No user');
+            return next(err);
+          }
+
+          if (user.phone != null) {
             console.debug(
               'Sending message to: ' + user.phone + ', email: ' + user.email,
             );
             sendMessage(req, res, next, user.phone);
           }
 
-          return res.redirect('/');
+          return res.redirect('/help');
         });
       });
     });
