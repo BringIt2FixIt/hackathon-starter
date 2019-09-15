@@ -4,7 +4,7 @@ const twilio = require('twilio')(
   process.env.TWILIO_TOKEN,
 );
 const WorkCategories = require('../models/WorkCategories.js');
-const { HelpRequest } = require('../models/HelpRequest');
+const HelpRequest = require('../models/HelpRequest');
 const { Event, sharedEventId } = require('../models/Event');
 
 /**
@@ -54,7 +54,7 @@ exports.sendHelp = (req, res, next) => {
     return res.redirect('/help');
   }
 
-  let helpRequest = new HelpRequest({
+  const helpRequest = new HelpRequest({
     from: req.user.email,
     category: req.body.category,
     descriptionMessage: req.body.message,
