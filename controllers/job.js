@@ -185,16 +185,23 @@ exports.updateList = (req, res, next) => {
         return new Error('Job not found');
       }
 
-      jobs = jobs.filter(item => item.category === job.category);
+      jobs = jobs.filter(
+        item =>
+          item.category === job.category && item.status === JobStatus.NOT_DONE,
+      );
 
-      console.log(`Did find job: ${job}, jobs in category: ${jobs.length}`);
+      const jobIndex = jobs.findIndex(job => job._id == requestId);
+
+      console.log(
+        `Did find job: ${job} (index: ${jobIndex}), jobs in category: ${jobs.length}`,
+      );
 
       job.status = JobStatus.DONE;
 
       job.save().then(() => {
         console.log(`Did update status for: ${job}`);
 
-        if (jobs.indexOf(job) === 0) {
+        if (jobIndex === 0) {
           console.debug('Job is first in the category');
           notifyNextVisitor(job.category).then(
             () => console.log('Did handle notifying next client'),
