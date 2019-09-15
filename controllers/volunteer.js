@@ -7,6 +7,7 @@ exports.getVolunteerRegistration = (req, res) => {
   }
   res.render('volunteer/register', {
     title: 'Register Volunteer',
+    user: req.user,
     categories: WorkCategories.workCategories,
   });
 };
