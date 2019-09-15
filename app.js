@@ -266,7 +266,7 @@ app.post('/admin', adminController.populateGoogleSheet);
 app.get('/job', jobController.getRegistration);
 app.post('/job', jobController.register);
 app.get('/jobs', jobController.list);
-app.post('/jobs', jobController.updateList);
+app.post('/jobs', passportConfig.isAuthenticated, jobController.updateList);
 
 /**
  * Error Handler.

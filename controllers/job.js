@@ -83,7 +83,7 @@ exports.list = (req, res, next) => {
     loadJobListTask = Job.find({ eventId: sharedEventId });
   }
 
-  loadJobListTask.then(
+  loadJobListTask.sort({ createdAt: 1 }).then(
     jobs => {
       console.log(`Did load: ${jobs.length}`);
 
@@ -94,7 +94,7 @@ exports.list = (req, res, next) => {
         console.debug(`Return unfiltered result`);
       }
 
-      jobs = jobs.sort((job1, job2) => job1.createdAt < job2.createdAt);
+      console.log(`Jobs: ${jobs}`);
 
       res.render('job/list', {
         title: 'Job Request List',
@@ -129,33 +129,34 @@ function notifyNextVisitor(category, matchingJobLengthCount) {
     category: category,
     eventId: sharedEventId,
     status: JobStatus.NOT_DONE,
-  }).then(
-    jobs => {
-      if (
-        matchingJobLengthCount != null &&
-        matchingJobLengthCount !== jobs.length
-      ) {
-        console.debug(
-          `Expected: Don't send notification, mismatch between job count: ${jobs.length}, required: ${matchingJobLengthCount}`,
-        );
-        return;
-      }
+  })
+    .sort({ createdAt: 1 })
+    .then(
+      jobs => {
+        if (
+          matchingJobLengthCount != null &&
+          matchingJobLengthCount !== jobs.length
+        ) {
+          console.debug(
+            `Expected: Don't send notification, mismatch between job count: ${jobs.length}, required: ${matchingJobLengthCount}`,
+          );
+          return;
+        }
 
-      console.debug(`Retrieved jobs: ${jobs.length}`);
-      jobs = jobs.sort((job1, job2) => job1.createdAt < job2.createdAt);
+        console.debug(`Retrieved jobs: ${jobs.length}`);
 
-      if (jobs.length === 0) {
-        console.log(`No jobs in queue for category: ${category}`);
-        return;
-      }
+        if (jobs.length === 0) {
+          console.log(`No jobs in queue for category: ${category}`);
+          return;
+        }
 
-      console.debug(`Notify next visitor in queue: ${jobs[0]}`);
-      sendMessage(jobs[0]);
-    },
-    error => {
-      console.error('Failed, error: ' + error);
-    },
-  );
+        console.debug(`Notify next visitor in queue: ${jobs[0]}`);
+        sendMessage(jobs[0]);
+      },
+      error => {
+        console.error('Failed, error: ' + error);
+      },
+    );
 }
 
 exports.updateList = (req, res, next) => {
