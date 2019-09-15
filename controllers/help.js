@@ -82,9 +82,9 @@ async function notifyEligibleVolunteers(req) {
 
 exports.sendHelp = (req, res, next) => {
   const validationErrors = [];
-  if (validator.isEmpty(req.body.message))
+  if (req.body.message == null || validator.isEmpty(req.body.message))
     validationErrors.push({ msg: 'Message cannot be blank.' });
-  if (validator.isEmpty(req.body.category))
+  if (req.body.category == null || validator.isEmpty(req.body.category))
     validationErrors.push({ msg: 'You must select a category.' });
 
   if (validationErrors.length) {
