@@ -1,14 +1,14 @@
 const workCategories = [
-    "Computers", 
-    "Electronics", 
-    "Appliances",
-    "Textile", 
-    "Woodwork",
-    "Jewellery",
-    "Leather",
-    "Bikes",
-    "Book Binding",
-    "Stringed Instruments"
+    "computers", 
+    "electronics", 
+    "appliances",
+    "textile", 
+    "woodwork",
+    "jewellery",
+    "leather",
+    "bikes",
+    "book binding",
+    "stringed instruments"
 ]
 
 module.exports = { workCategories };

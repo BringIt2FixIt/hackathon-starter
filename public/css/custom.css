@@ -36,3 +36,7 @@
 .item {
 flex-basis: 50%;
 }
+
+.capitalize{
+    text-transform: capitalize;
+}
