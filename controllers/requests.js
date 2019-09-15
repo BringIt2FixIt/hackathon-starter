@@ -1,3 +1,4 @@
+const HelpRequest = require('../models/HelpRequest');
 
 const FAKE_REQUESTS = [
   {
@@ -19,8 +20,11 @@ const FAKE_REQUESTS = [
  * Notifications page.
  */
 exports.index = (req, res) => {
-  res.render('requests', {
-    title: 'Requests',
-    requests: FAKE_REQUESTS
+  HelpRequest.find({}, function(err, requests) {
+    // res.send(userMap); 
+    res.render('requests', {
+      title: 'Requests',
+      requests: requests
+    }); 
   });
 };
