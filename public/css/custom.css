@@ -26,3 +26,13 @@
 .smallMarginRight {
     margin-right: 5px;
 }
+
+.flexContainer {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+.item {
+flex-basis: 50%;
+}

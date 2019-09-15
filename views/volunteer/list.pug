@@ -1,0 +1,10 @@
+extends ../layout
+
+block content
+  h1 
+  p.lead Registered Volunteers
+  each volunteer in volunteers
+    .card
+      .card-body
+        div Email: #{volunteer.email}
+        div Categories: #{volunteer.categories}

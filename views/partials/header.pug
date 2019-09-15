@@ -10,12 +10,14 @@
       ul.nav.navbar-nav
         li.nav-item(class=(title === 'Home') ? 'active' : undefined)
           a.nav-link(href='/') Home
+        li.nav-item(class=(title === 'Requests') ? 'active' : undefined)
+          a.nav-link(href='/requests') Requests
+        li.nav-item(class=(title === 'Volunteers') ? 'active' : undefined)
+          a.nav-link(href='/volunteers') Volunteers
         li.nav-item(class=(title === 'Contact') ? 'active' : undefined)
           a.nav-link(href='/contact') Contact
         li.nav-item(class=(title === 'Status') ? 'active' : undefined)
           a.nav-link(href='/status') Status
-        li.nav-item(class=(title === 'Requests') ? 'active' : undefined)
-          a.nav-link(href='/requests') Requests
       ul.nav.navbar-nav.ml-auto
         if !user
           li.nav-item(class=(title === 'Login') ? 'active' : undefined)

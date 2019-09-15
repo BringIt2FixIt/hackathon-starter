@@ -22,19 +22,18 @@ block content
         input(class="bottomBorder" placeholder="Phone" type="text" name="name" value=user.phone)
         label.col-md-6.col-form-label.font-weight-bold(for='phone') Phone
     div.row
-      H2 Expertise
-      div(style="padding-left:8px;").col-md-6.centered.bottomMargin.topMargin
-        div(class="bottomBorder" class="borderWidth") Select All That Are Relevant
-
-        div.form-group.row
-          label.col-md-6.col-form-label.font-weight-bold(for='categories') Categories
-            each category in categories
-                div
-                    input(type='checkbox', class='smallMarginRight', name='categories', id=category, value=category)
-                    label(for=category) #{category}
-        div.form-group
-          div.offset-md-6.pl-2
-            button.col-md-6.btn.btn-primary(type='submit')
-              i.far.fa-user.fa-sm
-              | Submit
-              
+    h2.centered.col-md-6.bottomMargin Expertise
+    div(style="padding-left:8px;").col-md-6.centered.bottomMargin.topMargin
+      div(class="bottomBorder" class="borderWidth") Select All That Are Relevant
+      div.form-group.row  
+        label.col-md-6.col-form-label.font-weight-bold(for='categories') Categories
+        div.flexContainer
+          each category in categories
+              div.item
+                  input(type='checkbox' class="smallMarginRight"  name='categories' id=category value=category)
+                  label(for=category) #{category}
+    div.form-group
+      div.offset-md-6.pl-2
+        button.col-md-6.btn.btn-primary(type='submit')
+          i.far.fa-user.fa-sm
+          | Submit
