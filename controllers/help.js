@@ -58,7 +58,7 @@ exports.sendHelp = (req, res, next) => {
   const helpRequest = new HelpRequest({
     from: req.user.email,
     category: req.body.category,
-    descriptionMessage: req.body.message,
+    message: req.body.message,
     eventId: sharedEventId,
   });
   helpRequest.save(err => {
