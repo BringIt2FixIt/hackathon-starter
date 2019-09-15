@@ -160,7 +160,11 @@ function notifyNextVisitor(category, matchingJobLengthCount) {
 }
 
 exports.updateList = (req, res, next) => {
-  console.log(`Update list: ${JSON.stringify(req.body)}`);
+  console.log(
+    `Update list: ${JSON.stringify(req.body)}, query: ${JSON.stringify(
+      req.query,
+    )}`,
+  );
 
   const { requestId } = req.body;
 
@@ -186,7 +190,12 @@ exports.updateList = (req, res, next) => {
         );
 
         req.flash('success', { msg: 'Did update status' });
-        res.redirect(`/jobs`);
+        ///?category=${job.category}
+        if (req.query.category != null) {
+          res.redirect(`/jobs?category=${req.query.category}`);
+        } else {
+          res.redirect(`/jobs`);
+        }
       });
     })
     .catch(error => {
