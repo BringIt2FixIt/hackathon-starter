@@ -6,6 +6,25 @@ block content
   form(method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
 
+     
+  h1.appTitle MRC Registiration
+  .row
+    .col-md-6.centered.bottomMargin
+      input(class = "bottomBorder" placeholder="Volunteer Team" type="text" name="name")
+  .row      
+    .col-md-6.centered.bottomMargin
+       input(class = "bottomBorder" placeholder="Email*" type="text" name="name")
+  .row      
+    .col-md-6.centered.bottomMargin
+      input(class = "bottomBorder" placeholder="Phone" type="text" name="name")
+  .row      
+    .col-md-6.centered.bottomMargin
+      input(class = "bottomBorder" type="text" name="name")
+  .row
+  h2.centered Expertise
+   .col-md-6.centered.bottomMargin 
+    input(class = "bottomBorder" placeholder = "Select All That Are Relevant" type="text" name="name")
+
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='categories') Categories
         label Category:
