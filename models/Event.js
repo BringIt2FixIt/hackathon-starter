@@ -14,9 +14,10 @@ const eventSchema = new mongoose.Schema(
 );
 
 const Event = mongoose.model('Event', eventSchema);
-module.exports = Event;
-
-/**
- * Hardcoded event id. For now there will be only 1 at any point of time.
- */
-module.exports.sharedEventId = 1;
+module.exports = {
+  Event: Event,
+  /**
+   * Hardcoded event id. For now there will be only 1 at any point of time.
+   */
+  sharedEventId: 1,
+};
