@@ -34,6 +34,10 @@ function sendMessage(req, receiverPhoneNumber) {
       req.body.message,
   };
 
+  console.debug(
+    `Send ${req.body.message} (${req.body.categor}) to ${receiverPhoneNumber} (${req.user.profile.name})`,
+  );
+
   return twilio.messages.create(message);
 }
 
@@ -51,10 +55,10 @@ async function notifyVolunteers(req, volunteers) {
   return Promise.all(
     volunteers
       .filter(user => {
-        user.phone != null;
+        return user.phone != null;
       })
       .map(user => {
-        return sendMessage(user.phone);
+        return sendMessage(req, user.phone);
       }),
   );
 }
@@ -77,7 +81,28 @@ async function notifyEligibleVolunteers(req) {
     return Promise.reject('No volunteers');
   }
 
-  await notifyVolunteers(req, eligibleVolunteers);
+  let eligibleVolunteerEmails = eligibleVolunteers.map(
+    volunteer => volunteer.email,
+  );
+  let allUsers = await User.find().orFail(new Error('No user found!'));
+  let eligibleVolunteerUsers = allUsers.filter(user => {
+    if (eligibleVolunteerEmails.indexOf(user.email) === -1) {
+      return false;
+    } else {
+      return true;
+    }
+  });
+
+  console.log(
+    `All users: ${allUsers.length}, eligible: ${eligibleVolunteerUsers.length}`,
+  );
+
+  if (eligibleVolunteers.length !== eligibleVolunteerUsers.length) {
+    console.log('Mismatch between volunteer and user count');
+    return Promise.reject('Internal error');
+  }
+
+  await notifyVolunteers(req, eligibleVolunteerUsers);
 }
 
 exports.sendHelp = (req, res, next) => {
