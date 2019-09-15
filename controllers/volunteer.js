@@ -1,12 +1,30 @@
 const WorkCategories = require('../models/WorkCategories.js');
 const { Event, sharedEventId } = require('../models/Event');
 
+exports.getVolunteers = (req, res) => {
+  const event = Event.findOne({ id: sharedEventId }).orFail(
+    new Error('No event found!'),
+  ).then((event) => {
+    var cleanVolunteers = event.volunteers.map(volunteer => {
+      return {
+        email: volunteer.email,
+        categories: volunteer.categories
+      }
+    });
+    res.render('volunteer/list', {
+      title: 'List Volunteers',
+      volunteers: cleanVolunteers
+    });
+  });
+}
+
 exports.getVolunteerRegistration = (req, res) => {
   if (req.user == null) {
     return res.redirect('/login');
   }
   res.render('volunteer/register', {
     title: 'Register Volunteer',
+    user: req.user,
     categories: WorkCategories.workCategories,
   });
 };

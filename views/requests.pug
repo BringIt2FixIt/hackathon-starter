@@ -2,9 +2,10 @@ extends layout
 
 block content
   h1 
-  p.lead Requests
+  p.lead Help Requests
   each request in requests
     .card
-      div From: #{request.from}
-      div Category: #{request.category}
-      div Message: #{request.message}
+      .card-body
+        div From: #{request.from}
+        div Category: #{request.category}
+        div Message: #{request.message}

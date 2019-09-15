@@ -23,16 +23,16 @@ exports.index = (req, res) => {
 };
 
 function sendMessage(req, receiverPhoneNumber) {
+  var username = req.user.profile.name || req.user.email;
   const message = {
     to: receiverPhoneNumber,
     from: '+17787711046',
-    body:
-      req.user.profile.name +
-      ' needs help with ' +
-      req.body.category +
-      '! ' +
-      req.body.message,
+    body: `${username} needs help with ${req.body.category}! '${req.body.message}'`
   };
+
+  console.debug(
+    `Send ${req.body.message} (${req.body.categor}) to ${receiverPhoneNumber} (${req.user.profile.name})`,
+  );
 
   return twilio.messages.create(message);
 }
@@ -51,10 +51,10 @@ async function notifyVolunteers(req, volunteers) {
   return Promise.all(
     volunteers
       .filter(user => {
-        user.phone != null;
+        return user.phone != null;
       })
       .map(user => {
-        return sendMessage(user.phone);
+        return sendMessage(req, user.phone);
       }),
   );
 }
@@ -74,10 +74,31 @@ async function notifyEligibleVolunteers(req) {
 
   if (eligibleVolunteers.length === 0) {
     console.log('No eligible volunteers found');
-    return Promise.reject('No volunteers');
+    return Promise.reject('Sorry - there are no volunteers for that category!');
   }
 
-  await notifyVolunteers(req, eligibleVolunteers);
+  let eligibleVolunteerEmails = eligibleVolunteers.map(
+    volunteer => volunteer.email,
+  );
+  let allUsers = await User.find().orFail(new Error('No user found!'));
+  let eligibleVolunteerUsers = allUsers.filter(user => {
+    if (eligibleVolunteerEmails.indexOf(user.email) === -1) {
+      return false;
+    } else {
+      return true;
+    }
+  });
+
+  console.log(
+    `All users: ${allUsers.length}, eligible: ${eligibleVolunteerUsers.length}`,
+  );
+
+  if (eligibleVolunteers.length !== eligibleVolunteerUsers.length) {
+    console.log('Mismatch between volunteer and user count');
+    return Promise.reject('Internal error');
+  }
+
+  await notifyVolunteers(req, eligibleVolunteerUsers);
 }
 
 exports.sendHelp = (req, res, next) => {
@@ -97,7 +118,7 @@ exports.sendHelp = (req, res, next) => {
     .then(
       () => {
         console.log('Did save and notified with success');
-        req.flash('success', { msg: 'Did register help request' });
+        req.flash('success', { msg: 'Sent help request!  Someone should be on their way' });
         res.redirect('/help');
       },
       error => {

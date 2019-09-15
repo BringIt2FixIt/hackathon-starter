@@ -2,21 +2,25 @@ extends ../layout
 
 block content
   div.pb-2.mt-2.mb-4.border-bottom
-    h3 Start helping
+    h3 Volunteer Registration
+    | Start Helping!
+
   form(method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
 
-     
-    h1.appTitle.bottomMargin Volunteer Registration
     div.row
-      div.col-md-6.centered.bottomMargin.topMargin
+      div.col-md-6.centered.topMargin.bottomMargin
         input(class="bottomBorder" placeholder="Volunteer Team" type="text" name="name")
+        label.col-md-6.col-form-label.font-weight-bold(for='team') Team
     div.row
-      div.col-md-6.centered.bottomMargin.topMargin
-        input(class="bottomBorder" placeholder="Email*" type="text" name="name")
+      div.col-md-6.centered.topMargin.bottomMargin
+        input(class="bottomBorder" placeholder="Email*" type="text" name="name" value=user.email)
+        label.col-md-6.col-form-label.font-weight-bold(for='email') Email
+
     div.row
-      div.col-md-6.centered.bottomMargin.topMargin
-        input(class="bottomBorder" placeholder="Phone" type="text" name="name")
+      div.col-md-6.centered.topMargin.bottomMargin
+        input(class="bottomBorder" placeholder="Phone" type="text" name="name" value=user.phone)
+        label.col-md-6.col-form-label.font-weight-bold(for='phone') Phone
     div.row
     h2.centered.col-md-6.bottomMargin Expertise
     div(style="padding-left:8px;").col-md-6.centered.bottomMargin.topMargin
