@@ -1,6 +1,6 @@
 const WorkCategories = require('../models/WorkCategories.js');
 const { Event, sharedEventId } = require('../models/Event');
-const Job = require('../models/Job');
+const { Job, JobStatus } = require('../models/Job');
 const validator = require('validator');
 
 exports.getRegistration = (req, res) => {
@@ -10,14 +10,28 @@ exports.getRegistration = (req, res) => {
   });
 };
 
+function saveJob(req) {
+  const job = new Job({
+    username: req.body.username,
+    phone: req.body.phone,
+    title: req.body.title,
+    description: req.body.description,
+    category: req.body.category,
+    eventId: sharedEventId,
+    status: JobStatus.NOT_DONE,
+  });
+  console.debug(`Save new job: ${job}`);
+  return job.save();
+}
+
 exports.register = (req, res, next) => {
   console.log(req.body);
   const validationErrors = [];
-  if (req.body.category == null)
+  if (req.body.category == null || req.body.category.length === 0)
     validationErrors.push({ msg: 'Category should be specified.' });
   if (req.body.username == null || req.body.username.length === 0)
     validationErrors.push({ msg: 'Username should be specified.' });
-  if (req.body.title == null || req.body.username.title === 0)
+  if (req.body.title == null || req.body.title.length === 0)
     validationErrors.push({ msg: 'Title should be specified.' });
   if (req.body.description == null || req.body.description.length === 0)
     validationErrors.push({ msg: 'Job Description should be specified.' });
@@ -29,70 +43,17 @@ exports.register = (req, res, next) => {
     req.flash('errors', validationErrors);
     return res.redirect('/job');
   }
-  //   Event.findOne({ id: sharedEventId }, (err, existingEvent) => {
-  //     if (err) {
-  //       req.flash('errors', 'an error occurred when finding event');
-  //       return res.redirect('/volunteer');
-  //     }
-  //     if (existingEvent == null) {
-  //       console.log('Creating event');
-  //       const event = new Event({
-  //         id: sharedEventId,
-  //         volunteers: [
-  //           {
-  //             email: req.user.email,
-  //             categories: req.body.categories,
-  //           },
-  //         ],
-  //         participants: [],
-  //       });
-  //       event.save(err => {
-  //         if (err) {
-  //           return next(err);
-  //         }
-  //         console.log('Did save event');
-  //         req.flash('success', { msg: `new event created` });
-  //         res.redirect('/volunteer');
-  //       });
-  //     } else {
-  //       console.log('Existing event found: ' + existingEvent.toString());
 
-  //       let volunteer = existingEvent.volunteers.find(volunteer => {
-  //         if (volunteer.email === req.user.email) {
-  //           return true;
-  //         } else {
-  //           return false;
-  //         }
-  //       });
-  //       if (volunteer == null) {
-  //         console.log('Volunteer is not found');
-  //         existingEvent.volunteers.push({
-  //           email: req.user.email,
-  //           categories: req.body.categories,
-  //         });
-  //       } else {
-  //         console.log('User already exists, update categories');
-
-  //         var index = existingEvent.volunteers.indexOf(volunteer);
-  //         if (index !== -1) {
-  //           volunteer.categories = req.body.categories;
-  //           existingEvent.volunteers[index] = volunteer;
-  //           console.log('Update user categories and save to the list');
-  //         } else {
-  //           console.warn('User index is not found');
-  //           req.flash('errors', 'User exists, but index is not found');
-  //           return res.redirect('/volunteer');
-  //         }
-  //       }
-
-  //       existingEvent.save(err => {
-  //         if (err) {
-  //           return next(err);
-  //         }
-  //         console.log('Did save event');
-  //         req.flash('success', { msg: `volunteer added` });
-  //         res.redirect('/volunteer');
-  //       });
-  //     }
-  //   });
+  saveJob(req).then(
+    () => {
+      console.log('Did save');
+      req.flash('success', { msg: 'Did save' });
+      res.redirect('/job');
+    },
+    error => {
+      console.log('Failed, error: ' + error);
+      req.flash('errors', { msg: error });
+      res.redirect('/job');
+    },
+  );
 };
