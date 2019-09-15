@@ -4,6 +4,7 @@ block content
     script.
         let dataFromServer = !{values};
         let volunteers = dataFromServer[0].volunteers;
+        let googleShetExportData = {};
         let rowIndex = 0;
         let columnIndex = 0;
         window.onload = () => {
@@ -31,24 +32,13 @@ block content
                 button.col-md-6.btn.btn-primary(type='submit') Get Data From Server
                 button.col-md-6.btn.btn-primary(onclick='makeApiCall') Export to Google Sheets
 
-        h4 Values in Google Sheets
+        //h4 Values in Google Sheets
+        h4
             table(id="dataTable" style='width:100%', border='1')
-
-
-        // - if (values.length)
-        //     table(style='width:100%', border='1')
-        //         tr
-        //             -for (var i = 0; i < values.length; i++)
-        //                 tr
-        //                 -for (var j = 0; j < values[i].length; j++)
-        //                     - if (i == 0)
-        //                         td(style='font-weight:bold')= values[i][j]
-        //                     - else
-        //                         td= values[i][j]
 
         script.
             function makeApiCall() {
-                let spreadsheetBody = {values};
+                let spreadsheetBody = googleShetExportData;
 
                 let request = gapi.client.sheets.spreadsheets.create({}, spreadsheetBody);
                 request.then(function(response) {
