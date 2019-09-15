@@ -82,18 +82,27 @@ exports.sendHelp = (req, res, next) => {
       }
 
       existingEvent.volunteers.forEach(volunteer => {
+        if (volunteer.categories.indexOf(req.body.category) === -1) {
+          return;
+        }
+
         User.findOne({ email: volunteer.email }, (err, user) => {
           if (err) {
             return next(err);
           }
-          if (user != null && user.phone != null) {
+          if (user == null) {
+            console.log('No user');
+            return next(err);
+          }
+
+          if (user.phone != null) {
             console.debug(
               'Sending message to: ' + user.phone + ', email: ' + user.email,
             );
             sendMessage(req, res, next, user.phone);
           }
 
-          return res.redirect('/');
+          return res.redirect('/help');
         });
       });
     });
