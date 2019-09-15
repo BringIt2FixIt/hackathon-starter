@@ -81,11 +81,20 @@ exports.sendHelp = (req, res, next) => {
         return next(err);
       }
 
-      existingEvent.volunteers.forEach(volunteer => {
+      let aligibleVolunteers = existingEvent.volunteers.filter(volunteer => {
         if (volunteer.categories.indexOf(req.body.category) === -1) {
-          return;
+          return false;
+        } else {
+          return true;
         }
+      });
 
+      if (aligibleVolunteers.length === 0) {
+        console.log('No eligible volunteers found');
+        return res.redirect('/help');
+      }
+
+      aligibleVolunteers.forEach(volunteer => {
         User.findOne({ email: volunteer.email }, (err, user) => {
           if (err) {
             return next(err);
