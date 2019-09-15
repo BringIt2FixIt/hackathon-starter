@@ -258,6 +258,7 @@ app.post('/volunteer', volonteerController.register);
  */
 app.get('/job', jobController.getRegistration);
 app.post('/job', jobController.register);
+app.get('/jobs', jobController.list);
 
 /**
  * Error Handler.

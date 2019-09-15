@@ -25,7 +25,7 @@ function saveJob(req) {
 }
 
 exports.register = (req, res, next) => {
-  console.log(req.body);
+  console.log(`Register: ${req.body}`);
   const validationErrors = [];
   if (req.body.category == null || req.body.category.length === 0)
     validationErrors.push({ msg: 'Category should be specified.' });
@@ -48,12 +48,47 @@ exports.register = (req, res, next) => {
     () => {
       console.log('Did save');
       req.flash('success', { msg: 'Did save' });
-      res.redirect('/job');
+      res.redirect(`/jobs?category=${req.body.category}`);
     },
     error => {
       console.log('Failed, error: ' + error);
       req.flash('errors', { msg: error });
-      res.redirect('/job');
+      res.redirect(`/job`);
+    },
+  );
+};
+
+exports.list = (req, res, next) => {
+  const { category } = req.query;
+  console.log(
+    `List for category: ${category}, all params: ${JSON.stringify(req.query)}`,
+  );
+
+  let loadJobListTask = null;
+  if (category != null) {
+    console.debug(`Retrieve list for category: ${category}`);
+    loadJobListTask = Job.find({
+      category: category,
+      eventId: sharedEventId,
+    });
+  } else {
+    loadJobListTask = Job.find({ eventId: sharedEventId });
+  }
+
+  loadJobListTask.then(
+    jobs => {
+      console.log(`Did load: ${jobs.length}`);
+
+      req.flash('success', { msg: 'Did load' });
+      res.render('job/list', {
+        title: 'Job Request List',
+        category: category,
+        requests: jobs,
+      });
+    },
+    error => {
+      console.log('Failed, error: ' + error);
+      req.flash('errors', { msg: error });
     },
   );
 };

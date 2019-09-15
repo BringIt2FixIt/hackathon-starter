@@ -1,0 +1,14 @@
+extends ../layout
+
+block content
+  h1 
+  if category
+    p.lead Job Requests for category: #{category}
+  else
+    p.lead Job Requests
+  each request in requests
+    .card
+      div Username: #{request.username}
+      div Category: #{request.category}
+      div Title: #{request.title}
+      div Description: #{request.description}
