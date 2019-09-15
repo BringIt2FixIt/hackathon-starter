@@ -23,15 +23,11 @@ exports.index = (req, res) => {
 };
 
 function sendMessage(req, receiverPhoneNumber) {
+  var username = req.user.profile.name || req.user.email;
   const message = {
     to: receiverPhoneNumber,
     from: '+17787711046',
-    body:
-      req.user.profile.name +
-      ' needs help with ' +
-      req.body.category +
-      '! ' +
-      req.body.message,
+    body: `${username} needs help with ${req.body.category}! '${req.body.message}'`
   };
 
   console.debug(
