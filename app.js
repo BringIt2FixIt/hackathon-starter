@@ -253,20 +253,20 @@ app.get('/requests', passportConfig.isAuthenticated, requestController.index);
 /**
  * Volunteer routes.
  */
-app.get('/volunteer', volunteerController.getVolunteerRegistration);
-app.post('/volunteer', volunteerController.register);
-app.get('/volunteers', volunteerController.getVolunteers);
+app.get('/volunteer', passportConfig.isAuthenticated, volunteerController.getVolunteerRegistration);
+app.post('/volunteer', passportConfig.isAuthenticated, volunteerController.register);
+app.get('/volunteers', passportConfig.isAuthenticated, volunteerController.getVolunteers);
 
-app.get('/admin', adminController.getAdmin);
-app.post('/admin', adminController.populateGoogleSheet);
+app.get('/admin', passportConfig.isAuthenticated, adminController.getAdmin);
+app.post('/admin', passportConfig.isAuthenticated, adminController.populateGoogleSheet);
 
 /**
  * Job routes.
  */
-app.get('/job', jobController.getRegistration);
-app.post('/job', jobController.register);
-app.get('/jobs', jobController.list);
-app.post('/jobs', passportConfig.isAuthenticated, jobController.updateList);
+app.get('/job', passportConfig.isAuthenticated, jobController.getRegistration);
+app.post('/job', passportConfig.isAuthenticated, jobController.register);
+app.get('/jobs', passportConfig.isAuthenticated, jobController.list);
+app.post('/jobs', passportConfig.isAuthenticated, passportConfig.isAuthenticated, jobController.updateList);
 
 /**
  * Error Handler.
