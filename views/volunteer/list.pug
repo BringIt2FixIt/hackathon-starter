@@ -3,8 +3,13 @@ extends ../layout
 block content
   h1 
   p.lead Registered Volunteers
-  each volunteer in volunteers
+
+  if volunteers.length>0
+    each volunteer in volunteers
+      .card
+        .card-body
+          div Email: #{volunteer.email}
+          div Categories: #{volunteer.categories}
+  else
     .card
-      .card-body
-        div Email: #{volunteer.email}
-        div Categories: #{volunteer.categories}
+      div No volunteers found

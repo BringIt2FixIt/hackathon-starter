@@ -3,9 +3,18 @@ extends layout
 block content
   h1 
   p.lead Help Requests
-  each request in requests
+
+  a.hr(href="/help").title()
+    button.col-md-6.btn.btn-primary
+      | Write new message
+
+  if requests.length>0
+    each request in requests
+      .card
+        .card-body
+          div From: #{request.from}
+          div Category: #{request.category}
+          div Message: #{request.message}
+  else
     .card
-      .card-body
-        div From: #{request.from}
-        div Category: #{request.category}
-        div Message: #{request.message}
+      div No messages found
